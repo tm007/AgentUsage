@@ -87,6 +87,12 @@ python3 -m pytest tests
 swift build
 ```
 
+## Public safety defaults
+
+This repo is designed to be safe as public source code. The collector defaults to `AGENTUSAGE_PUBLIC_SAFE=1`, which keeps generated reports from embedding full local project paths in aggregate project rows. Set `AGENTUSAGE_PUBLIC_SAFE=0` only for private/local-only reports where you explicitly want full paths.
+
+Never commit generated report files (`usage-summary.json`, `usage-sessions.csv`, `usage-dashboard.html`) because they can contain project names, models, usage volumes, costs, and session metadata. They are ignored by `.gitignore`.
+
 ## Privacy
 
 Reports include project paths, aggregate usage, models, dates, costs, and read/write activity. Raw prompts and message content are not written to generated report files. Keep generated JSON/CSV/HTML files local; `.gitignore` excludes them.

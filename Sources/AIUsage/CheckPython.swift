@@ -4,8 +4,8 @@ import Foundation
 enum EnvCheck {
     static func validate() -> String? {
         let fm = FileManager.default
-        let docs = fm.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let folder = docs.appendingPathComponent("ai-usage-dashboard.documents-copy")
+        let appSupport = fm.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+        let folder = appSupport.appendingPathComponent("ai-usage-dashboard")
         
         let script = folder.appendingPathComponent("generate_usage_dashboard.py")
         let json = folder.appendingPathComponent("usage-summary.json")

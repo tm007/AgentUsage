@@ -49,13 +49,18 @@ def project_label(path):
     return parts[-1] if parts else path
 
 
+PUBLIC_SAFE = os.environ.get("AGENTUSAGE_PUBLIC_SAFE", "1").lower() not in {"0", "false", "no"}
+
+
 def clean_project(path):
     if not path:
         return ""
     path = str(path)
     home = str(HOME)
     if path.startswith(home):
-        return "~" + path[len(home):]
+        path = "~" + path[len(home):]
+    if PUBLIC_SAFE:
+        return project_label(path)
     return path
 
 
@@ -686,7 +691,12 @@ def parse_cursor():
             if not project.is_dir():
                 continue
             rec = empty_session("Cursor", f"cursor-project-{project.name}")
-            label = project.name.replace("Users-theo-", "").replace("-", "/")
+            label = project.name
+            if label.startswith("Users-"):
+                label = label.removeprefix("Users-")
+                parts = label.split("-", 1)
+                label = parts[1] if len(parts) == 2 else label
+            label = label.replace("-", "/")
             rec["project_path"] = "~/" + label if not label.startswith("/") else label
             rec["project_label"] = project_label(label)
             rec["start_time"] = iso_from_ms(int(project.stat().st_mtime))
@@ -852,14 +862,14 @@ def aggregate(sessions):
 
         key = (rec["tool"], rec["project_label"])
         p = projects.setdefault(key, {
-            "tool": rec["tool"], "project": rec["project_label"], "project_path": rec["project_path"],
+            "tool": rec["tool"], "project": rec["project_label"], "project_path": "" if PUBLIC_SAFE else rec["project_path"],
             "sessions": 0, "total_tokens": 0, "activity_proxy": 0, "duration_minutes": 0,
             "files_modified": 0, "lines_added": 0, "lines_removed": 0, "confidence": rec["confidence"],
         })
         p["sessions"] += 1
         for k in ["total_tokens", "activity_proxy", "duration_minutes", "files_modified", "lines_added", "lines_removed"]:
             p[k] += rec[k]
-        if len(p["project_path"]) < len(rec["project_path"]):
+        if not PUBLIC_SAFE and len(p["project_path"]) < len(rec["project_path"]):
             p["project_path"] = rec["project_path"]
 
     tool_rows = []
