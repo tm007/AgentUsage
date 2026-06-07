@@ -2,7 +2,7 @@
 
 Portable, local-first macOS dashboard for AI usage across Claude, Codex, Cursor, OpenCode, Hermes, and Pi.
 
-![AgentUsage dashboard screenshot](docs/screenshots/dashboard.png)
+![AgentUsage native macOS app dashboard screenshot](docs/screenshots/app-dashboard.png)
 
 ## About
 
