@@ -2,6 +2,14 @@
 
 Portable, local-first macOS dashboard for AI usage across Claude, Codex, Cursor, OpenCode, Hermes, and Pi.
 
+![AgentUsage dashboard screenshot](docs/screenshots/dashboard.png)
+
+## About
+
+AgentUsage turns local usage traces from supported AI coding agents into a polished macOS dashboard for token volume, cache mix, model usage, daily trends, source coverage, top projects, and largest sessions.
+
+It is designed to stay local-first: the collector reads files on your machine, writes reports under Application Support, and does not commit generated usage data. Raw prompts and message content are not written to the generated dashboard files.
+
 This repository contains the whole source system:
 
 - native SwiftUI macOS app (`Sources/AIUsage`)

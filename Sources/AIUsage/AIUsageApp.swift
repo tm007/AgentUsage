@@ -23,6 +23,20 @@ struct AIUsageApp: App {
         .defaultSize(width: 1120, height: 760)
         .defaultPosition(.center)
         .commands {
+            CommandGroup(replacing: .appInfo) {
+                Button("About AgentUsage") {
+                    NSApplication.shared.orderFrontStandardAboutPanel(options: [
+                        .applicationName: "AgentUsage",
+                        .applicationVersion: "1.0",
+                        .version: "1",
+                        .credits: NSAttributedString(
+                            string: "Local-first AI usage analytics for macOS.\n\nGenerated reports stay local by default and raw prompts are not written to dashboard files.",
+                            attributes: [.font: NSFont.systemFont(ofSize: 12)]
+                        )
+                    ])
+                }
+            }
+
             CommandGroup(after: .appInfo) {
                 Button("Refresh") {
                     store.refresh()
@@ -37,6 +51,11 @@ struct AIUsageApp: App {
                 .keyboardShortcut("w", modifiers: .command)
             }
         }
+
+        Window("About AgentUsage", id: "about-agentusage") {
+            AboutView()
+        }
+        .windowResizability(.contentSize)
 
         Settings {
             SettingsView()

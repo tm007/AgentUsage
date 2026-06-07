@@ -3,6 +3,7 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject var store: UsageStore
     @State private var selectedTab = 0
+    @State private var showingAbout = false
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -40,6 +41,12 @@ struct ContentView: View {
                 .help("Export usage data as JSON")
             }
             ToolbarItem {
+                Button(action: { showingAbout = true }) {
+                    Image(systemName: "info.circle")
+                }
+                .help("About AgentUsage")
+            }
+            ToolbarItem {
                 if let last = store.lastRefresh {
                     Text("Updated \(last.formatted(.relative(presentation: .named)))")
                         .font(.caption)
@@ -47,6 +54,9 @@ struct ContentView: View {
                         .monospacedDigit()
                 }
             }
+        }
+        .sheet(isPresented: $showingAbout) {
+            AboutView()
         }
         .navigationTitle("AgentUsage")
     }

@@ -11,6 +11,8 @@ logs/
 __pycache__/
 .pytest_cache/
 *.pyc
+node_modules/
+package-lock.json
 usage-summary.json
 usage-sessions.csv
 usage-dashboard.html
